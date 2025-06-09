@@ -5,22 +5,49 @@ import Calendar from '@/components/Calendar.vue';
 
 const events = ref([
   {
-    date: '2025-06-10',
-    title: 'Møde med kunden',
-    type: 'møde',
-    description: 'Vi mødes med kunden for at diskutere næste fase.',
-    time: '10:00',
-    location: 'København',
-    image: 'https://via.placeholder.com/150'
+    date: '15-06-2025',
+    title: 'National Bueskydningstræning',
+    type: 'træning',
+    description: 'Intensiv træning for landsholdet på Bueskydningscenteret i Odense.',
+    time: '18:00',
+    location: 'Odense Bueskydningscenter',
+    image: 'https://via.placeholder.com/150?text=Træning'
   },
   {
-    date: '2025-06-12',
-    title: 'Marketingkampagne starter',
-    type: 'marketing',
-    description: 'Kampagnen starter for vores nye produkt.',
+    date: '20-06-2025',
+    title: 'Regionale Bueskydningsmesterskaber',
+    type: 'konkurrence',
+    description: 'Årlig konkurrence for bueskytter i Region Midtjylland.',
     time: '09:00',
-    location: 'Online',
-    image: 'https://via.placeholder.com/150'
+    location: 'Aarhus Stadion',
+    image: 'https://via.placeholder.com/150?text=Konkurrence'
+  },
+  {
+    date: '25-06-2025',
+    title: 'Workshop: Teknik og Præcision',
+    type: 'workshop',
+    description: 'Lær nye teknikker til at forbedre din præcision med instruktør Jesper.',
+    time: '14:00',
+    location: 'København Bueskydningsklub',
+    image: 'https://via.placeholder.com/150?text=Workshop'
+  },
+  {
+    date: '28-06-2025',
+    title: 'Social Bueskydning & Grill',
+    type: 'socialt',
+    description: 'Kom til en hyggelig aften med bueskydning og grill for alle medlemmer.',
+    time: '17:00',
+    location: 'Bueskydningsklubben, Aarhus',
+    image: 'https://via.placeholder.com/150?text=Socialt'
+  },
+  {
+    date: '05-07-2025',
+    title: 'Junior Landsholdstræning',
+    type: 'træning',
+    description: 'Træning for juniorspillere med fokus på teknik og teamwork.',
+    time: '16:00',
+    location: 'Odense Bueskydningscenter',
+    image: 'https://via.placeholder.com/150?text=Junior+Træning'
   }
 ])
 

@@ -4,36 +4,41 @@ import { ref, computed, } from 'vue'
 const props = defineProps({
   events: {
     type: Array,
-    default: () => []
+    default: () => [] //Fallback hvis ingen events gives. 
   }
 })
 
-const currentMonth = ref(new Date().getMonth());
-const currentYear = ref(new Date().getFullYear());
+//State (reaktive refs) til nholde styr på måned og år som bliver initialsieret til dags dato.
+const currentMonth = ref(new Date().getMonth()); //Januar = 0 og December = 11
+const currentYear = ref(new Date().getFullYear()); 
 
+//Uge dagene og måneder til visning på kalenderen
 const weekdays = ['Man', 'Tir', 'Ons', 'Tors', 'Fre', 'Lør', 'Søn'];
-const Months = ['Januar', 'Febuar', 'Marts', 'April', 'Maj', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'December'];
+const Months = ['Januar', 'Februar', 'Marts', 'April', 'Maj', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'December'];
 
+//Vi beregner alle dagene som skal vises i kalenderen, inklusiv dagene fra forrige og næste månede til at udfylde ugerne
 const calendarDays = computed(() => {
   const days = [];
 
 //Første dag i måned
 const firstDayofMonth = new Date(currentYear.value, currentMonth.value, 1);
 //sidste dag i måned - vi sætter 1,0 for at den retunrere den sidste dag i den aktuelle måned da javascript Date API giver en sidste dag i måned hvis du sætter den til 0.
-const lastDayofMonth = new Date(currentYear.value, currentMonth.value + 1,0);
-const startDay = firstDayofMonth.getDay();
+const lastDayofMonth = new Date(currentYear.value, currentMonth.value + 1,0); //Vi sætter datoen til 0 for at få sidste dag i forrige måned)
+const startDay = (firstDayofMonth.getDay() +6) % 7; // 0 = søndag og 1 = mandag)
 const totalDays = lastDayofMonth.getDate();
 
+//Her tilføjer vi tomme dagee fra de forrige månede
   for (let i = 0; i < startDay; i++) {
     const date = new Date(currentYear.value, currentMonth.value, i - startDay + 1)
-    days.push(date)
+    days.push(date) //pusher dag fra forrige måned
   }
 
+  //Her tilføjer vi dagene fra den aktuelle måned
   for (let i = 1; i <= totalDays; i++) {
     const date = new Date(currentYear.value, currentMonth.value, i)
     days.push(date)
   }
-
+  // Her tilføjer vi dagene fra næste månede for at få 7 kolonner
  while (days.length % 7 !== 0) {
     const lastDate = days[days.length - 1];
     const nextDate = new Date(lastDate.getFullYear(), lastDate.getMonth(), lastDate.getDate() + 1);
@@ -43,12 +48,21 @@ const totalDays = lastDayofMonth.getDate();
   return days;
 });
 
-function getEventsForDate(date) {
-  const dayString = date.toISOString().split('T')[0]
-  return props.events.filter(event => event.date === dayString)
+//Funktion som formatterer en dato til dansk format ergo dd-mm-yyyy
+function danishDateFormat(date){
+  const day = String(date.getDate()).padStart(2,'0');
+  const month = String(date.getMonth()+1).padStart(2,'0');
+  const year = date.getFullYear();
+  return `${day}-${month}-${year}`;
 }
 
+//Retrnerer events for en given data ved at samligne dataformat
+function getEventsForDate(date) {
+  const formatted = danishDateFormat(date);
+  return props.events.filter(event => event.date === formatted);
+}
 
+//Tjekker om datoen er dagens dato - returnerer true hvis datoen matcher dagens dato får styling, (blåt hue)
 function isToday(date) {
   const today = new Date();
   return (
@@ -58,6 +72,7 @@ function isToday(date) {
   );
 }
 
+//Funktion til at gå til den forrige måned som også håndterer skift af år.
 function prevMonth() {
   if (currentMonth.value === 0) {
     currentMonth.value = 11;
@@ -66,7 +81,7 @@ function prevMonth() {
     currentMonth.value--;
   }
 }
-
+//Funktion til at gå til den Næste måned som også håndterer skift af år.
 function nextMonth() {
   if (currentMonth.value === 11) {
     currentMonth.value = 0;
@@ -80,9 +95,9 @@ function nextMonth() {
 <template>
   <div class="calendar">
     <div class="calendarHeader">
-      <button @click="prevMonth">‹</button>
+      <button class="navButton" @click="prevMonth">‹</button>
      <h2>{{ Months[currentMonth] }} {{ currentYear }}</h2>
-      <button @click="nextMonth">›</button>
+      <button class="navButton" @click="nextMonth">›</button>
     </div>
 
     <div class="weekdays">
@@ -112,9 +127,10 @@ function nextMonth() {
 
 <style scoped>
 .calendar {
-  max-width: 600px;
+  max-width: 1000px; 
+  width: 100%;
   margin: auto;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: sans-serif;
   border: 1px solid #e0e0e0;
   border-radius: 8px;
   overflow: hidden;
@@ -133,21 +149,21 @@ function nextMonth() {
 .calendarHeader h2 {
   margin: 0;
   font-size: 1.5rem;
-  color: #333;
+  color: black;
 }
 
 .navButton {
-  background: none;
+  background-color: var(--BtnColor);
+  color: white;
   border: none;
   font-size: 1.5rem;
   cursor: pointer;
-  padding: 0.5rem;
-  border-radius: 4px;
+  border-radius: 6px;
   transition: background-color 0.2s;
 }
 
 .navButton:hover {
-  background-color: #e9ecef;
+  background-color: var(--BtnColorhover);
 }
 
 .weekdays, .days {
@@ -155,27 +171,27 @@ function nextMonth() {
   grid-template-columns: repeat(7, 1fr);
 }
 
-.weekdays {
-  background-color: #f8f9fa;
-}
 
 .weekday {
   font-weight: bold;
   padding: 0.75rem 0;
   text-align: center;
-  border-bottom: 1px solid #e0e0e0;
   color: #666;
   font-size: 0.9rem;
 }
 
 .day {
   border: 1px solid #f0f0f0;
-  padding: 0.5rem;
-  min-height: 100px;
+  padding: 0.20rem;
+  aspect-ratio: 1 / 1; 
   cursor: pointer;
-  position: relative;
   background-color: white;
+  position: relative;
   transition: background-color 0.2s;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }
 
 .day:hover {
@@ -189,7 +205,6 @@ function nextMonth() {
 
 .day.otherMonth {
   background-color: #fafafa;
-  color: #ccc;
 }
 
 .day.otherMonth .dateNumber {
@@ -202,7 +217,6 @@ function nextMonth() {
   font-size: 1rem;
   color: #333;
 }
-
 
 .events {
   list-style: none;
@@ -218,11 +232,52 @@ function nextMonth() {
   color: white;
 }
 
-.event.møde {
+.event.træning {
   background-color: #007bff;
 }
 
-.event.marketing {
+.event.konkurrence {
+  background-color: #c92639;
+}
+
+.event.workshop {
   background-color: #28a745;
 }
+
+.event.socialt {
+  background-color: #c231aa;
+}
+
+
+@media (max-width: 600px) {
+  .calendar {
+    max-width: 100%;
+    font-size: 12px;
+  }
+
+  .day {
+    padding: 0.2rem;
+    aspect-ratio: 1 / 1;
+    min-height: auto;
+  }
+
+  .dateNumber {
+    font-size: 0.8rem;
+  }
+
+  .event {
+    font-size: 0.6rem;
+    padding: 1px 4px;
+  }
+
+  .calendarHeader h2 {
+    font-size: 1.2rem;
+  }
+
+  .navButton {
+    font-size: 1.2rem;
+    padding: 0.25rem 0.5rem;
+  }
+}
+
 </style>

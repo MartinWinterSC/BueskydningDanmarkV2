@@ -46,11 +46,12 @@ const clubs = ref([
 }
 ])
 
+//Opsætter regioner til filtrering af klubber
 const regions = ['Alle', 'Nordjylland', 'Midtjylland', 'Sydjylland', 'Sjælland']
-const selectedRegion = ref('Alle')
-const selectedClub = ref(null)
+const selectedRegion = ref('Alle') //Default option
+const selectedClub = ref(null) //Ingen klub valgt
 
-function handleClubClick(club) {
+function handleClubClick(club) { //Når en klub bliver klikket bliver den valgte sendt op i toppen af listen
   selectedClub.value = club
 }
 
@@ -133,6 +134,8 @@ const sortedClubs = computed(() => {
   margin-bottom: 10px;
   padding: 4px 8px;
 }
+
+/* ---------------Klub listen--------------- */
 .clubList {
   list-style: none;
   padding: 0;
