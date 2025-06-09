@@ -20,10 +20,10 @@ import EliteMainView from '../views/elite/EliteMainView.vue'
   import NationalTeamOverviewView from '../views/elite/NationalTeamsOverviewView.vue'
     import NationalTeamView from '../views/elite/NationalTeamView.vue'
 
-import klubOversigtView from '@/views/klubOversigtView.vue'
-import proevBueskydning from '@/views/bredde/proevBueskydning.vue'
-import contact from '@/views/Contact.vue'
-import about from '@/views/AboutView.vue'
+import klubOversigtView from '../views/klubOversigtView.vue'
+import proevBueskydning from '../views/bredde/proevBueskydning.vue'
+import contact from '../views/Contact.vue'
+import about from '../views/AboutView.vue'
 
 const router = createRouter({
   history: createWebHashHistory(import.meta.env.BASE_URL),

@@ -69,7 +69,7 @@ function subscribeNewsletter() {
       <div class="footerSection newsletterSection">
         <h3 class="sectionTitle">Tilmeld vores newsletter</h3>
         <p class="newsletterDescription">
-          Lorem ipsum dolor sit amet consectetur adipiscing elit. Quisque faucibus ex sapien vitae pellentesque.
+          Vil du holde dig opdateret på hvad der sker indenfor bueskydning, så tilmeld dig vores nyhedsbrev og hold dig opdateret på de nyeste nyheder.
         </p>
         <form @submit.prevent="subscribeNewsletter" class="newsletterForm">
           <input 

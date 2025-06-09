@@ -37,9 +37,7 @@ const props = defineProps({
 <template>
   <!-- Horizontal variant -->
   <div v-if="variant === 'horizontalNews'" class="CardHorizontal">
-    <div class="CardImageHorizontal">
-      <img :src="image" alt="Card Image" />
-    </div>
+      <img :src="image" alt="Card Image" class="CardImageHorizontal"/>
     <div class="CardContentHorizontal">
       <h3 class="cardTitle">{{ title }}</h3>
       <p class="CardSummary">{{ summary }}</p>
@@ -55,22 +53,22 @@ const props = defineProps({
     <div class="CardImage">
       <img :src="image" alt="Card Image" />
     </div>
+
+    <div class="CardContent">
+      <h3 class="cardTitle">{{ title }}</h3>
     
-      <div class="CardContent">
-        <h3 class="cardTitle">{{ title }}</h3>
-      
-        <template v-if="variant === 'News'">
-          <p class="CardDate">{{ date }}</p>
-          <p class="CardSummary">{{ summary }}</p>
-          <div class="CardFooter">
-            <StandardBtn variant="primary">Læs mere</StandardBtn>
-          </div>
-        </template>
-      
-        <template v-else-if="variant === 'Simple'">
-          <!-- No extra content for Simple -->
-        </template>
-      </div>
+      <template v-if="variant === 'News'">
+        <p class="CardDate">{{ date }}</p>
+        <p class="CardSummary">{{ summary }}</p>
+        <div class="CardFooter">
+          <StandardBtn variant="primary">Læs mere</StandardBtn>
+        </div>
+      </template>
+    
+      <template v-else-if="variant === 'Simple'">
+        <!-- No extra content for Simple -->
+      </template>
+    </div>
     </div>
   </div>
 </template>
@@ -139,20 +137,20 @@ a{
   border-radius: 8px;
   overflow: hidden;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-  padding: 1rem;
+  /* padding: 1rem; */
   align-items: center;
   max-width: 500px;
 }
 
 .CardImageHorizontal {
-  flex-shrink: 0;
+  /* flex-shrink: 0; */
   width: 150px;
-  height: 100px;
+  /* height: 100px; */
 }
 
 .CardImageHorizontal img {
   width: 100%;
-  height: 100%;
+  /* height: 100%; */
   object-fit: cover;
   border-radius: 4px;
 }

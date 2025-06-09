@@ -63,18 +63,15 @@ onMounted(() => {
   <div class="headerSection">
     <div class="titleWithLine">
       <h1>Nyheder</h1>
-      <div class="line"></div>
     </div>
-
+    <div class="headerSection">
+      <div class="titleWithLine">
+        <h2>Seneste Nyheder</h2>
+        <div class="line"></div>
+      </div>
+    </div>
     <div class="contentWrapper">
       <section class="contentSection">
-        <div class="headerSection">
-          <div class="titleWithLine">
-            <h2>Seneste Nyheder</h2>
-            <div class="line"></div>
-          </div>
-        </div>
-
         <div
           class="featuredNews"
           v-if="featuredNews"
@@ -137,22 +134,6 @@ onMounted(() => {
     </div>
   </div>
 
-  <section class="SubHeaderSection">
-    <h2>Articles</h2>
-    <div class="cardGrid">
-      <BaseCard
-        v-for="post in articleCards"
-        :key="post.id"
-        variant="News"
-        :title="post.title"
-        :summary="post.summary"
-        :date="post.date"
-        :image="post.image"
-        @click="goToArticle(post.id)"
-      />
-    </div>
-  </section>
-
   <NewsletterModal
     v-model="showNewsletterModal"
     @submit="handleNewsletterSubmit"
@@ -165,7 +146,6 @@ onMounted(() => {
   display: grid;
   grid-template-columns: 2fr 1fr;
   gap: var(--space-xl);
-  margin-bottom: var(--section-gap);
   align-items: start;
 }
 .featuredNews {
@@ -218,6 +198,7 @@ onMounted(() => {
   font-size: 0.9rem;
   line-height: 1.5;
   margin-bottom: var(--space-md);
+  color: white;
 }
 .sidebarNews {
   display: flex;

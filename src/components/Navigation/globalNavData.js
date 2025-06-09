@@ -69,7 +69,7 @@ export default [
         to: null,
         children: [
             {label: 'Kontakt Information', to: '/contact'},
-            {label: 'Kluboversigt', to: null},
+            {label: 'Kluboversigt', to: '/klubOversigtView'},
             {label: 'Udvalg', to: null},
             {label: 'Kursus', to: null},
             {label: 'Forbund', to: null},

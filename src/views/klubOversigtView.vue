@@ -56,8 +56,8 @@ function handleClubClick(club) {
 
 const sortedClubs = computed(() => {
   let filtered = selectedRegion.value === 'Alle'
-    ? clubList.value
-    : clubList.value.filter(club => club.region === selectedRegion.value)
+    ? clubs.value
+    : clubs.value.filter(club => club.region === selectedRegion.value)
 
   if (selectedClub.value) {
     const selectedId = selectedClub.value.id
@@ -81,7 +81,7 @@ const sortedClubs = computed(() => {
   </div>
   <section class="contentSection">
     <div class="mapWrapper">
-      <ClubKort :clubs="clubList" @club-clicked="handleClubClick" />
+      <ClubKort :clubs="clubs" @club-clicked="handleClubClick" />
     </div>
     <div class="sidebar">
       <label for="regionFilter">Filtrer efter region:</label>
