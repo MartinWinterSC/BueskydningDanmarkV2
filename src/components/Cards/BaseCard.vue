@@ -81,6 +81,10 @@ const props = defineProps({
   font-weight: bold;
 }
 
+.CardContentHorizontal{
+  padding: var(--space-sm);
+}
+
 .CardSummary {
   font-size: 0.95rem;
   color: black;
@@ -132,12 +136,10 @@ a{
 /* Horisontalt layout */
 .CardHorizontal {
   display: flex;
-  gap: 1rem;
   background: white;
   border-radius: 8px;
   overflow: hidden;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-  /* padding: 1rem; */
   align-items: center;
   max-width: 500px;
 }
@@ -150,7 +152,8 @@ a{
 
 .CardImageHorizontal img {
   width: 100%;
-  /* height: 100%; */
+  display: block;
+  height: 100%;
   object-fit: cover;
   border-radius: 4px;
 }

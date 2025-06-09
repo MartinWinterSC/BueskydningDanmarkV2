@@ -51,7 +51,7 @@ onMounted(() => {
 
         featuredNews.value = cleaned[0];
         sidebarNews.value = cleaned.slice(1, 3);
-        articleCards.value = cleaned.slice(3);
+        articleCards.value = cleaned.slice(0);
       }
     })
     .catch(err => console.error('News fetch error:', err));
@@ -120,17 +120,22 @@ onMounted(() => {
         <h2>Alle Nyheder</h2>
         <div class="line"></div>
       </div>
+      <div class="filter">
+        <font-awesome-icon icon="filter" />
+      </div>
     </div>
+    
     <div class="cardGrid">
       <BaseCard
-        v-for="post in sidebarNews"
-        :key="post.id"
-        :title="post.title"
-        :summary="post.summary"
-        :date="post.date"
-        :image="post.image"
-        @click="goToArticle(post.id)"
-      />
+      v-for="post in articleCards"
+      :key="post.id"
+      variant="News"
+      :title="post.title"
+      :summary="post.summary"
+      :date="post.date"
+      :image="post.image"
+      @click="goToArticle(post.id)"
+    />
     </div>
   </div>
 
@@ -211,6 +216,12 @@ onMounted(() => {
   gap: var(--space-lg);
   margin-top: var(--space-md);
 }
+.filter{
+  color: #525151;
+  font-size: 2rem;
+  margin-top: 10px;
+}
+
 @media (max-width: 1024px) {
   .contentWrapper {
     grid-template-columns: 1fr;
