@@ -9,6 +9,7 @@ import HeroImage from '@/assets/Billeder/heroImage.png';
 import nySkytteImg from '@/assets/Billeder/nySkytte.png';
 import StandardBtn from '@/components/Buttons/StandardBtn.vue';
 import UptoTopBtn from '@/components/Buttons/UptoTopBtn.vue';
+import IntersectionObserverWrapper  from '@/components/IntersectionObserverWrapper.vue'
 import { useRouter } from 'vue-router';
 
 const router = useRouter();
@@ -77,13 +78,16 @@ Bueskydning Danmark er en del af et større fællesskab via medlemsskab af Danma
     </div>
   </div>
 
+  <IntersectionObserverWrapper>
   <section class="HomeSection">
     <TextImageSection 
       :Breadtekst="breadtekst"
       :image="instrucktorImg"
     />
   </section>
+  </IntersectionObserverWrapper>
 
+<IntersectionObserverWrapper>
   <section class="newArcherSection">
     <img :src="nySkytteImg" alt="New Archer Image" class="newArcherImg" />
     <div class="newArcherContainer">
@@ -103,13 +107,37 @@ Bueskydning Danmark er en del af et større fællesskab via medlemsskab af Danma
       </div>    
     </div>
   </section>
+  </IntersectionObserverWrapper>
 
+ 
   <section class="headerSection">
     <div class="titleWithLine">
       <h2>Kalender</h2>
       <div class="line"></div>
     </div>
-    <Calendar />
+
+    <IntersectionObserverWrapper>
+    <section class="CalendarSection">
+      <Calendar />
+      <aside class="sidebar">
+        <div class="sidebarNews">
+          <BaseCard
+            v-for="post in sidebarNews"
+            :key="post.id"
+            variant="horizontalNews" 
+            :title="post.title"
+            :summary="post.summary"
+            :date="post.date"
+            :image="post.image"
+            @click="goToArticle(post.id)"
+          />
+        </div>
+      </aside>
+    </section>
+    </IntersectionObserverWrapper>
+    
+
+    
   </section>
 
   <section class="headerSection"> 
@@ -245,6 +273,24 @@ main .headerSection:first-child {
   justify-content: center;
   margin-top: var(--space-sm);
 }
+
+.calendarSection {
+  display: flex;
+  gap: 2rem;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-top: 2rem;
+}
+
+.calendarSection > * {
+  flex: 1;
+}
+
+.sidebar {
+  max-width: 300px;
+}
+
+
 @media (max-width: 768px) {
   .NewArcherContent h2 {
     font-size: 1.5rem;
