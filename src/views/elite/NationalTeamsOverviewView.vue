@@ -1,28 +1,33 @@
 <script setup>
-  import { ref } from 'vue';
-  import { useRouter } from 'vue-router';
-  import BaseCard from '@/components/Cards/BaseCard.vue';
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+import BaseCard from '@/components/Cards/BaseCard.vue';
 
-  import recurve from '@/assets/Billeder/recurveLandshold.jpg';
-  import compound from '@/assets/Billeder/compoundLandshold.jpg';
-  import threeD from '@/assets/Billeder/3DLandsholdet.jpg';
-  import mens from '@/assets/Billeder/mandLandshold.jpg';
-  import womens from '@/assets/Billeder/kvindeLandshold.png';
-  import youth from '@/assets/Billeder/ungdomsLandshold.jpg';
+// Static images for each category
+import recurve from '@/assets/Billeder/recurveLandshold.jpg';
+import compound from '@/assets/Billeder/compoundLandshold.jpg';
+import threeD from '@/assets/Billeder/3DLandsholdet.jpg';
+import mens from '@/assets/Billeder/mandLandshold.jpg';
+import womens from '@/assets/Billeder/kvindeLandshold.png';
+import youth from '@/assets/Billeder/ungdomsLandshold.jpg';
 
-  const router = useRouter();
+// Sets up the function needed for using the Vue router (Being able to go between pages)
+const router = useRouter();
 
-  function handleClick(team) {
-    router.push({ name: 'NationalTeamView', params: { category: team.slug } });
-  }
+// Pushes the user to the NationalTeamView with addition to the adding the params "team.slug" to the URL so it uses the same page for all teams but shows different content
+function handleClick(team) {
+  router.push({ name: 'NationalTeamView', params: { category: team.slug } });
+}
 
-  const NationalTeams = ref([
-    { slug: 'recurve', name: 'Recurve landsholdet', image: recurve },
-    { slug: 'compound', name: 'Compound landsholdet', image: compound },
-    { slug: '3d', name: '3D landsholdet', image: threeD },
-    { slug: 'man', name: 'Herre landsholdet', image: mens },
-    { slug: 'woman', name: 'Kvinde landsholdet', image: womens },
-    { slug: 'youth', name: 'Ungdoms landsholdet', image: youth },
+// Static list of each national team category, used for defining the destination above
+// (Slugs in this case is much like ID in news, but because it's defined by an ACF instead of a post ID, slugs were neccessary)
+const NationalTeams = ref([
+  { slug: 'recurve', name: 'Recurve landsholdet', image: recurve },
+  { slug: 'compound', name: 'Compound landsholdet', image: compound },
+  { slug: '3d', name: '3D landsholdet', image: threeD },
+  { slug: 'man', name: 'Herre landsholdet', image: mens },
+  { slug: 'woman', name: 'Kvinde landsholdet', image: womens },
+  { slug: 'youth', name: 'Ungdoms landsholdet', image: youth },
 ]);
 </script>
 
@@ -36,6 +41,7 @@
   </div>
   <section class="BaseSection">
     <div class="Container">
+<!-- Load each card with the relevant data from the static content set up in the script -->
       <BaseCard
         v-for="team in NationalTeams"
         :key="team.id"

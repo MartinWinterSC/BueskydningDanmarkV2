@@ -1,6 +1,7 @@
 <script setup>
 import StandardBtn from '../Buttons/StandardBtn.vue';
 
+// Props received from parent component to render event details, most require a string (text)
 const props = defineProps({
   image: String,
   title: String,
@@ -40,13 +41,11 @@ const props = defineProps({
         </div>
       </div>
     </div>
-
-      <StandardBtn variant="primary" @click="$emit('click')">Læs mere</StandardBtn>
+    <StandardBtn variant="primary" @click="$emit('click')">Læs mere</StandardBtn>
   </div>
 </template>
 
 <style scoped> 
-
 .eventCard {
   display: flex;
   flex-wrap: wrap;

@@ -2,6 +2,7 @@ import BueskydningLogo from '@/assets/BueskydningLogo.svg'
 
 export default [
     // {label:'', to: '/', isLogo: true},
+    // Sets up the data for the global navigation, making it dynamic instead of static
     
     {
         label: 'Fællesskab',

@@ -2,12 +2,15 @@
 import { useRouter } from 'vue-router';
 import StandardBtn from '@/components/Buttons/StandardBtn.vue';
 
+// Sets up the function needed for using the Vue router (Being able to go between pages)
 const router = useRouter();
 
+// Navigates to the gallery archive page
 function goToArchiveGalleryView() {
     router.push('/ArchiveGalleryView');
 }
     
+// Navigates to the rally results archive page
 function goToArchiveRallyView() {
     router.push('/ArchiveRallyView');
 }
@@ -18,6 +21,7 @@ function goToArchiveRallyView() {
     <h1>Arkiv</h1>
     <section>
         <h2>Billeder</h2>
+<!-- Navigates via router to ArchiveGalleryView, fully functioning -->
         <div class="seeMoreBtnContainer">
             <StandardBtn variant="primary" @click="goToArchiveGalleryView">
                 Se alle billeder
@@ -26,18 +30,21 @@ function goToArchiveRallyView() {
     </section>
     <section>
         <h2>Video</h2>
+<!-- Is suppose to navigate via router to the relevant view, not implimented -->
         <div class="seeMoreBtnContainer">
           <StandardBtn variant="primary">Se alle videoer</StandardBtn>
         </div>
     </section>
     <section>
         <h2>Livestream</h2>
+<!-- Is suppose to navigate via router to the relevant view, not implimented -->
         <div class="seeMoreBtnContainer">
           <StandardBtn variant="primary">Se alle livestreams</StandardBtn>
         </div>
     </section>
     <section>
         <h2>Stævneresultater</h2>
+<!-- Navigates via router to ArchiveRallyView, fully functioning -->
         <div class="seeMoreBtnContainer">
             <StandardBtn variant="primary" @click="goToArchiveRallyView">
                 Se alle stævneresultater

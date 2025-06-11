@@ -1,18 +1,19 @@
 <script setup>
-import { onMounted } from 'vue'
+import { onMounted } from 'vue';
 
-let toTopButton
-
+let toTopButton;
 
 onMounted(() => {
   toTopButton = document.querySelector(".toTopButton")
 
+// Animation cleanup: remove 'bounceIn' class after animation
     toTopButton.addEventListener('animationend', () => {
         if (toTopButton.classList.contains('bounceIn')) {
         toTopButton.classList.remove('bounceIn')
         }
     })
 
+// Looks out for if the window has been scrolled, then displays the button
     window.onscroll = function() {
     if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
       if (toTopButton.style.display !== "block") {
@@ -25,6 +26,7 @@ onMounted(() => {
 }
 })
 
+// Function to scroll smoothly to the top
 function toTopFunction() {
   window.scrollTo({
     top: 0,

@@ -1,13 +1,16 @@
 <script setup>
 const props = defineProps({
+// Athlete object must be provided, contains info like name, image, category (data from the NationTeamView)
   athlete: {
     type: Object,
     required: true
   }
 });
 
+// Declare custom event that this component can emit
 const emit = defineEmits(['cardClicked']);
 
+// Emit the athlete data when the card is clicked
 function handleCardClick() {
   emit('cardClicked', props.athlete);
 }
@@ -26,7 +29,6 @@ function handleCardClick() {
 
 
 <style scoped>
-
 .athleteCard {
   text-align: center;
   cursor: pointer;

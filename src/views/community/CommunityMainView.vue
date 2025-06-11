@@ -6,30 +6,42 @@ import StandardBtn from '@/components/Buttons/StandardBtn.vue';
 import communityHero from '@/assets/Billeder/Community.png';
 import { useRouter } from 'vue-router';
 
+// Sets up the arrays to hold fetched content for each section
 const Magasincards = ref([]);
 const Newscards = ref([]);
 const Forumscards = ref([]);
 
+// Sets up the function needed for using the Vue router (Being able to go between pages)
 const router = useRouter();
+
+// Navigates to the article view adding the ID at the end of the URL for use to specify the content under the page
 const goToArticle = (id) => {
   router.push({ name: 'Artikle', query: { id } });
 };
+
+//  Navigate to a route path
 const goTo = (path) => {
   if (path) {
     router.push(path);
   }
 };
+
+// Ensures the retrived data doesn't have any HTML tags attached when fetched (WordPress sends this data within base data structure)
 const stripHtml = (html) => {
   const div = document.createElement('div');
   div.innerHTML = html;
   return div.textContent || div.innerText || '';
 };
+
+// Shortens the text recieved to ensure the textbox doesn't get overly big, adds the "..." to the end show there is more
 const shortenText = (text, length = 100) => {
   return text.length > length ? text.slice(0, length) + '...' : text;
 };
 
+// Sets base URL for the fetch request coming later, this path is universal across all fetch requests
 const baseURL = "https://www.mmd-s23-afsluttende-wp.dk/wp-json/wp/v2/";
 
+// Actual fetch request, specifically from "news", "forum", and "print" custom post type, only takes the first 3 of each
 onMounted(() => {
   fetch(`${baseURL}news?per_page=3&_embed`)
     .then(res => res.json())
@@ -82,6 +94,7 @@ onMounted(() => {
       <h1>Fællesskabet</h1>
       <div class="line"></div>
     </div>
+<!-- Static text -->
     <TextImageSection 
       Breadtekst="Velkommen til Fællesskabet. Dette er stedet, hvor du kan holde dig opdateret med nyheder fra bueskydningsverdenen, dykke ned i inspirerende magasiner, udforske tidligere indhold og deltage i forummet, hvor du kan stille spørgsmål, dele erfaringer og hjælpe andre bueskyttere."
       :image="communityHero" 
@@ -92,6 +105,7 @@ onMounted(() => {
       <h2>News</h2>
       <div class="line"></div>
     </div>
+<!-- Renders the cards for "news" -->
     <div class="cardGrid">
       <BaseCard 
         v-for="(card, index) in Newscards"
@@ -110,6 +124,7 @@ onMounted(() => {
       <h2>Forum</h2>
       <div class="line"></div>
     </div>
+<!-- Renders the cards for "forum" -->
     <div class="cardGrid">
       <BaseCard 
         v-for="(card, index) in Forumscards"
@@ -128,6 +143,7 @@ onMounted(() => {
     <h2>Magasiner</h2>
     <div class="line"></div>
   </div>
+<!-- Renders the cards for "magazine (print, used interchangeably)" -->
   <div class="cardGrid">
     <a
       v-for="(card, index) in Magasincards"

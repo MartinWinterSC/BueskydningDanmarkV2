@@ -1,6 +1,7 @@
 <script setup>
 import BaseCard from '@/components/Cards/BaseCard.vue';
 
+// Sets up static placeholder data
 const forumCards = [
   {
     variant: 'Simple',
@@ -33,6 +34,7 @@ const forumCards = [
   </div>
   <section class="SubHeaderSection">
     <h2>Nye posts</h2>
+  <!-- Loops through the static data above and renders them -->
     <div class="cardGrid">
       <article v-for="(post, index) in forumCards" :key="`new-${index}`">
         <BaseCard v-bind="post" />

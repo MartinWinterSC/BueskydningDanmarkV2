@@ -4,8 +4,10 @@ import { useRouter } from 'vue-router';
 import BaseCard from '@/components/Cards/BaseCard.vue';
 import BueskydningLogo from '@/assets/Billeder/BueskydningDanmarklogo.png';
 
+// Sets up the function needed for using the Vue router (Being able to go between pages)
 const router = useRouter();
 
+// Static list of each element used later to make the 
 const EliteNavPoints = ref([
   { id: 1, name: 'Landsholdet', image: BueskydningLogo},
   { id: 2, name: 'Skytterepræsentant', image: BueskydningLogo },
@@ -15,6 +17,7 @@ const EliteNavPoints = ref([
   { id: 6, name: 'Antidoping', image: BueskydningLogo},
 ]);
 
+// Sets up the function for sending the user to the NationalTeamOverviewView, specifically with the ID of the selected NavPoint, for use under NationalTeamOverviewView
 function handleClick(NavPoint) {
   router.push({ name: 'NationalTeamOverviewView', params: { id: NavPoint.id } });
 }
@@ -41,6 +44,7 @@ function handleClick(NavPoint) {
       </div>
     </section>
     <div class="Container">
+      <!-- Loops through the nav items, creating a BaseCard for each element in the list -->
       <BaseCard
         v-for="NavPoint in EliteNavPoints"
         :key="NavPoint.id"

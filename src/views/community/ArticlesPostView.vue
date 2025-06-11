@@ -2,6 +2,8 @@
 import { ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 
+// 1: Sets up the function needed for using the Vue router (Being able to go between pages)
+// 2: Reactive object holding fetched post content
 const route = useRoute();
 const post = ref({
   title: '',
@@ -10,9 +12,12 @@ const post = ref({
   contentHtml: '',
 });
 
+// 1: Sets up the boolean for likes
+// 1: Sets up the boolean for bookmarked
 const isLiked = ref(false);
 const isBookmarked = ref(false);
 
+// Static comments, just to give the example for how it'd look as comments, as well as setup for users, are not implimented during project constraints
 const comments = ref([
   {
     id: 1,
@@ -30,6 +35,7 @@ const comments = ref([
   }
 ]);
 
+// Static content for other posts
 const sidebarItems = ref([
   {
     id: 1,
@@ -53,14 +59,15 @@ const sidebarItems = ref([
   }
 ]);
 
+// 6: Toggles like and bookmark states
 const toggleLike = () => {
   isLiked.value = !isLiked.value;
 };
-
 const toggleBookmark = () => {
   isBookmarked.value = !isBookmarked.value;
 };
 
+// fetch the post content using the ID from the route, has to be async instead of normal fetch, unsure why exactly this won't work as the others
 onMounted(async () => {
   const id = route.query.id;
   if (!id) return;

@@ -12,30 +12,39 @@ import UptoTopBtn from '@/components/Buttons/UptoTopBtn.vue';
 import IntersectionObserverWrapper  from '@/components/IntersectionObserverWrapper.vue'
 import { useRouter } from 'vue-router';
 
+// 1: Sets up the function needed for using the Vue router (Being able to go between pages)
+// 2: Stores relevant data from the fetch request
+// 3: Sets base URL for the fetch request coming later, this path is universal across all fetch requests
 const router = useRouter();
 const newsCards = ref([]);
 const baseURL = "https://www.mmd-s23-afsluttende-wp.dk/wp-json/wp/v2/";
 
+// Ensures the retrived data doesn't have any HTML tags attached when fetched (WordPress sends this data within base data structure)
 const stripHtml = (html) => {
   const div = document.createElement('div');
   div.innerHTML = html;
   return div.textContent || div.innerText || '';
 };
 
+// Shortens the text recieved to ensure the textbox doesn't get overly big, adds the "..." to the end show there is more
 const shortenText = (text, length = 100) => {
   return text.length > length ? text.slice(0, length) + '...' : text;
 };
 
+// Navigates to a given route path
 const goTo = (path) => {
   if (path) {
     router.push(path);
   }
 };
 
+// Same as above, but also adds the ID to the URL so the same page can display any article
 const goToArticle = (id) => {
   router.push({ name: 'Artikle', query: { id } });
 };
 
+// Actual fetch request, specifically from "news" custom post type, only the first 3 and "embed" makes the featured media (an image) accessible
+// Each post is processed and stored in "newsCards", will be used later
 onMounted(() => {
   fetch(baseURL + "news?per_page=3&_embed")
     .then(response => response.json())
@@ -53,6 +62,7 @@ onMounted(() => {
     .catch(error => console.error("News fetch error (frontpage):", error));
 });
 
+// Static text used later within the template
 const breadtekst = `Bueskydning Danmark er øverste faglige myndighed inden for Bueskydning i Danmark. Vi har en høj standart inden for vidensområderne; sikkerhed og regler, træningslære og afvikling af konkurrencer. Vi tilbyder bueskydning til alle niveauer. Vi ønsker at fremme bueskydning som amatøridræt såvel praktisk som teoretisk samt understøtte de skytter, som ønsker at dygtiggøre sig imod eliteskydning. Vi ønsker at engagere de skytter, der ønsker fællesskabet, og de skytter, der finder motivation i det autonome medlemskab via tilbud, som gør bueskydning relevant og nærværende.
 
 Bueskydning Danmark er en del af et større fællesskab via medlemsskab af Danmarks Idrætsforbund (DIF) samt det internationale, europæiske og nordiske forbund i bueskydning; World Archery (WA), World Archery Europe (WAE) og World Archery Nordic (WAN). Via disse medlemsskaber og vores position, som værende den øverste faglige myndighed indenfor Bueskydning i Danmark, har vi ansvaret for at repræsentere dansk bueskydning samt vores foreninger i som udenfor Danmark.`;
@@ -69,7 +79,6 @@ Bueskydning Danmark er en del af et større fællesskab via medlemsskab af Danma
     <localNavigation />
   </div>
 </section>
-
 <main>
   <div class="headerSection">
     <div class="titleWithLine">
@@ -77,7 +86,6 @@ Bueskydning Danmark er en del af et større fællesskab via medlemsskab af Danma
       <div class="line"></div>
     </div>
   </div>
-
   <IntersectionObserverWrapper>
   <section class="HomeSection">
     <TextImageSection 
@@ -86,41 +94,39 @@ Bueskydning Danmark er en del af et større fællesskab via medlemsskab af Danma
     />
   </section>
   </IntersectionObserverWrapper>
-
-<IntersectionObserverWrapper>
-  <section class="newArcherSection">
-    <img :src="nySkytteImg" alt="New Archer Image" class="newArcherImg" />
-    <div class="newArcherContainer">
-      <div class="newArcherContent">
-        <h2>Er du ny skytte?</h2>
-        <div class="NewArcherContentText">
-          <p>
-            Drømmer du om at prøve kræfter med bueskydning? Uanset om du er barn, voksen eller noget midt imellem, er bueskydning en sport for alle.
-            Som ny skytte bliver du en del af et fællesskab, hvor der er plads til både sjov, fordybelse og personlig udvikling.
-          </p>
-          <p>Find ud af hvor du kan afprøve bueskydning henne tæt på dig</p>
+  <IntersectionObserverWrapper>
+    <section class="newArcherSection">
+      <img :src="nySkytteImg" alt="New Archer Image" class="newArcherImg" />
+      <div class="newArcherContainer">
+        <div class="newArcherContent">
+          <h2>Er du ny skytte?</h2>
+          <div class="NewArcherContentText">
+            <p>
+              Drømmer du om at prøve kræfter med bueskydning? Uanset om du er barn, voksen eller noget midt imellem, er bueskydning en sport for alle.
+              Som ny skytte bliver du en del af et fællesskab, hvor der er plads til både sjov, fordybelse og personlig udvikling.
+            </p>
+            <p>Find ud af hvor du kan afprøve bueskydning henne tæt på dig</p>
+          </div>
         </div>
+        <div class="NewArcherContentFooter">
+<!-- Usess the click funtion to push the user to the relevant view -->
+          <StandardBtn variant="primary" @click="$router.push('klubOversigtView')">Se klub oversigt</StandardBtn>
+          <StandardBtn variant="primary" @click="$router.push('proevBueskydning')">Prøv bueskydning</StandardBtn>
+        </div>    
       </div>
-      <div class="NewArcherContentFooter">
-        <StandardBtn variant="primary" @click="$router.push('klubOversigtView')">Se klub oversigt</StandardBtn>
-        <StandardBtn variant="primary" @click="$router.push('proevBueskydning')">Prøv bueskydning</StandardBtn>
-      </div>    
-    </div>
-  </section>
+    </section>
   </IntersectionObserverWrapper>
-
- 
   <section class="headerSection">
     <div class="titleWithLine">
       <h2>Kalender</h2>
       <div class="line"></div>
     </div>
-
     <IntersectionObserverWrapper>
     <section class="CalendarSection">
       <Calendar />
       <aside class="sidebar">
         <div class="sidebarNews">
+<!-- Sets up the calender cards to the side of the main calendar -->
           <BaseCard
             v-for="post in sidebarNews"
             :key="post.id"
@@ -135,17 +141,14 @@ Bueskydning Danmark er en del af et større fællesskab via medlemsskab af Danma
       </aside>
     </section>
     </IntersectionObserverWrapper>
-    
-
-    
   </section>
-
   <section class="headerSection"> 
     <div class="titleWithLine">
       <h2>Nyeste Nyheder</h2>
       <div class="line"></div>
     </div>
     <div class="cardGrid">
+<!-- Places the data extracted from the fetch request and places it here -->
       <BaseCard 
         v-for="(card, index) in newsCards"
         :key="card.title"
@@ -239,7 +242,6 @@ Bueskydning Danmark er en del af et større fællesskab via medlemsskab af Danma
   color: white;
   margin-top: 0;
 }
-
 .newArcherContent {
   margin: 0;
 }
@@ -273,7 +275,6 @@ main .headerSection:first-child {
   justify-content: center;
   margin-top: var(--space-sm);
 }
-
 .calendarSection {
   display: flex;
   gap: 2rem;
@@ -281,15 +282,12 @@ main .headerSection:first-child {
   align-items: flex-start;
   margin-top: 2rem;
 }
-
 .calendarSection > * {
   flex: 1;
 }
-
 .sidebar {
   max-width: 300px;
 }
-
 
 @media (max-width: 768px) {
   .NewArcherContent h2 {

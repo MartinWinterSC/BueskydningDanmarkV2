@@ -1,23 +1,28 @@
 <script setup>
 import { ref } from 'vue';
 
+// Imports logos for SoMe
 import FacebookLogo from '@/assets/FacebookLogo.png';
 import InstagramLogo from '@/assets/InstagramLogo.png';
 import Logo from '@/assets/BueskydningLogo.svg';
+
+// Reactive email input field and submit state
 const email = ref('');
 const isSubmitted  = ref(false);
 
+// Handles newsletter subscription
 function subscribeNewsletter() {
   if (email.value) {
+// Show confirmation animation
     isSubmitted.value = true;
 
+// Waits 2 seconds (2000 milliseconds), before it resets
     setTimeout(() => {
       email.value = '';
       isSubmitted.value = false;
     }, 2000);
   }
 }
-
 </script>
 
 <template>

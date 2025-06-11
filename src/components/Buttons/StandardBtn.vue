@@ -1,7 +1,7 @@
-
 <script setup>
 import { computed, defineProps } from 'vue';
 
+// Define props for the button
 const props = defineProps({
   variant: {
     type: String,
@@ -9,6 +9,7 @@ const props = defineProps({
   },
 });
 
+// Compute CSS class based on the variant
 const BtnVariants = computed(() => {
   switch (props.variant) {
     case 'secondary':
@@ -20,6 +21,7 @@ const BtnVariants = computed(() => {
 </script>
 
 <template>
+<!-- Emits a click event and uses classes for styling -->
   <button
     :class="['baseButton', BtnVariants]"
     @click="$emit('click')"

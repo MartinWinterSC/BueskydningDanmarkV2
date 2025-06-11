@@ -2,6 +2,7 @@
 import { reactive, computed, ref } from 'vue'
 import StandardBtn from '@/components/Buttons/StandardBtn.vue'
 
+// Creates and set the isSubmitted state to false
 const isSubmitted = ref(false)
 
 // Props

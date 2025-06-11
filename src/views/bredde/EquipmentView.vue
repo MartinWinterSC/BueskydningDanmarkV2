@@ -1,11 +1,14 @@
 <script setup>
 import { ref } from 'vue'
 
+// 1, 2, and 3: User inputs
+// 4: Result string to display output
 const height = ref('')
 const armspan = ref('')
 const drawWeight = ref('')
 const result = ref('')
 
+// Function to calculate draw length and suggest price category
 function calculate() {
     const heightVal = parseFloat(height.value)
     const armspanVal = parseFloat(armspan.value)
@@ -13,6 +16,7 @@ function calculate() {
 
     let drawLength
 
+// Prefer armspan if provided; fallback to height
     if (!isNaN(armspanVal)) {
         drawLength = (armspanVal / 2.54) / 2.5
     } else if (!isNaN(heightVal)) {
@@ -24,8 +28,10 @@ function calculate() {
 
     drawLength = drawLength.toFixed(2)
 
+// Construct result string
     let output = `Beregnede værdier:\nTræklængde: ${drawLength} tommer\nTrækstyrke: ${!isNaN(drawWeightVal) ? drawWeightVal + ' lbs' : 'ikke angivet'}\n`
 
+// Suggest price tier based on draw length and draw weight
     if (drawLength < 26 && drawWeightVal <= 25) {
         output += 'Anbefalet prisniveau: Budget bue (ca. 1000 kr)'
     } else if (drawLength >= 26 && drawLength <= 29 && drawWeightVal <= 35) {

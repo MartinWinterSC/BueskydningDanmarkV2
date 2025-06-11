@@ -1,9 +1,13 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 
+// 1: Stores relevant data from the fetch request
+// 2: Sets base URL for the fetch request coming later, this path is universal across all fetch requests
 const staff = ref([]);
 const baseUrl = 'https://www.mmd-s23-afsluttende-wp.dk/wp-json/wp/v2/';
 
+// Actual fetch request, specifically from "staff" custom post type, and displays as many as possible (to a max of 100 even if we'll, in practise, never get close to that number)
+// Each post is processed and stored in "staff", will be used later, much data is from an ACF
 onMounted(() => {
   fetch(`${baseUrl}staff?per_page=100&_embed`)
     .then(response => response.json())
@@ -11,7 +15,7 @@ onMounted(() => {
       staff.value = data.map(post => ({
         image: post._embedded?.['wp:featuredmedia']?.[0]?.source_url || '',
         title: post.title?.rendered || '',
-        name: post.acf?.navn || '',
+        name: post.acf?.title || '',
         phone: post.acf?.tlfNumber || '',
         email: post.acf?.email || ''
       }));
@@ -24,11 +28,11 @@ onMounted(() => {
 <main>
     <section>
         <div class="headerSection">
-      <div class="titleWithLine">
-        <h1>Kontakt</h1>
-        <div class="line"></div>
-      </div>
-    </div>
+            <div class="titleWithLine">
+                <h1>Kontakt</h1>
+                <div class="line"></div>
+            </div>
+        </div>
         <div class="contactContainer">
             <div class="contactElement">
                 <img src="" alt="Telefon ikon" />
@@ -78,6 +82,7 @@ onMounted(() => {
         </div>
         <p>OBS: Bueskydning Danmarks sekretariat holder sommerferielukket i uge 28, 29 og 30.</p>
         <div class="staffCardContainer">
+<!-- Uses the data extracted from the fetch request before -->
             <div v-for="person in staff" :key="person.title" class="staffCard">
                 <img :src="person.image" :alt="person.name" />
                 <p>{{ person.title }}</p>

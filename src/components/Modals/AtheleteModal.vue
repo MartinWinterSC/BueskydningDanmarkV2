@@ -1,11 +1,11 @@
 <script setup>
-
-
+// Props: receives athlete data and visibility flag for the modal
 const props = defineProps({
   athlete: Object,
   visible: Boolean
 });
 
+// Emits: allows parent to close the modal
 const emit = defineEmits(['close']);
 </script>
 

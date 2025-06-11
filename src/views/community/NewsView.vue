@@ -5,37 +5,49 @@ import BaseCard from '@/components/Cards/BaseCard.vue';
 import StandardBtn from '@/components/Buttons/StandardBtn.vue';
 import NewsletterModal from '@/components/Modals/NewsletterModal.vue';
 
+// 1: Controls visibility of the newsletter signup modal (by default set to not be visible)
+// 2: Stores the most recent news post, shown as the featured article
+// 3: Stores 2 additional recent news items shown in the sidebar
+// 4: Stores the full list of news posts for the grid section
 const showNewsletterModal = ref(false);
 const featuredNews = ref(null);
 const sidebarNews = ref([]);
 const articleCards = ref([]);
 
+// Sets up the function needed for using the Vue router (Being able to go between pages)
 const router = useRouter();
 
+// Navigates to the article view adding the ID at the end of the URL for use to specify the content under the page
 const goToArticle = (id) => {
   router.push({ name: 'Artikle', query: { id } });
 };
 
+// Opens the newsletter modal when button is clicked
 const openNewsletterModal = () => {
   showNewsletterModal.value = true;
 };
 
+// Handles form submission from the newsletter modal
 const handleNewsletterSubmit = (formData) => {
   console.log('Newsletter signup data:', formData);
 };
 
+// Ensures the retrived data doesn't have any HTML tags attached when fetched (WordPress sends this data within base data structure)
 const stripHtml = (html) => {
   const div = document.createElement('div');
   div.innerHTML = html;
   return div.textContent || div.innerText || '';
 };
 
+// Shortens the text recieved to ensure the textbox doesn't get overly big, adds the "..." to the end show there is more
 const shortenText = (text, length = 100) => {
   return text.length > length ? text.slice(0, length) + '...' : text;
 };
 
+// Sets base URL for the fetch request coming later, this path is universal across all fetch requests
 const baseUrl = 'https://www.mmd-s23-afsluttende-wp.dk/wp-json/wp/v2/';
 
+// Actual fetch request, specifically from "news" custom post type
 onMounted(() => {
   fetch(`${baseUrl}news?per_page=100&_embed`)
     .then(res => res.json())
@@ -49,6 +61,9 @@ onMounted(() => {
           image: post._embedded?.['wp:featuredmedia']?.[0]?.source_url || '',
         }));
 
+// 1: Sets featuredNews to be the first in the object array retrieved
+// 2: Sets sidebarNews to be 2 and 3 in the object array retrieved
+// 3: Sets articleCards to include all objects from the array retrieved (was meant to say 3 instead of 0, which would mean it would display all objects AFTER the 3rd)
         featuredNews.value = cleaned[0];
         sidebarNews.value = cleaned.slice(1, 3);
         articleCards.value = cleaned.slice(0);
@@ -72,17 +87,20 @@ onMounted(() => {
     </div>
     <div class="contentWrapper">
       <section class="contentSection">
+<!-- Renders the featured article -->
         <div
           class="featuredNews"
           v-if="featuredNews"
           @click="goToArticle(featuredNews.id)"
         >
+<!-- Renders the image attached -->
           <div class="newsImage">
             <img
               :src="featuredNews.image"
               :alt="featuredNews.title"
             />
           </div>
+<!-- Renders the content of the featured article -->
           <div class="newsContent">
             <h3 class="newsTitle" v-html="featuredNews.title"></h3>
             <p class="newsExcerpt">{{ featuredNews.summary }}</p>
@@ -90,7 +108,7 @@ onMounted(() => {
           </div>
         </div>
       </section>
-
+<!-- Renders the newsletter -->
       <aside class="sidebar">
         <div class="newsletterSection">
           <h3 class="newsletterTitle">Tilmeld dig vores nyhedsbrev her</h3>
@@ -99,7 +117,7 @@ onMounted(() => {
           </p>
           <StandardBtn variant="primary" @click="openNewsletterModal">Tilmeld nyhedsbrev</StandardBtn>
         </div>
-
+<!-- Renders the two articles on the side -->
         <div class="sidebarNews">
           <BaseCard
             v-for="post in sidebarNews"
@@ -114,7 +132,6 @@ onMounted(() => {
         </div>
       </aside>
     </div>
-
     <div class="headerSection">
       <div class="titleWithLine">
         <h2>Alle Nyheder</h2>
@@ -124,7 +141,7 @@ onMounted(() => {
         <font-awesome-icon icon="filter" />
       </div>
     </div>
-    
+<!-- Renders all articles -->
     <div class="cardGrid">
       <BaseCard
       v-for="post in articleCards"

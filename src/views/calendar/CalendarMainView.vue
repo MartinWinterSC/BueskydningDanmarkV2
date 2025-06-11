@@ -3,6 +3,7 @@ import { computed, ref } from 'vue';
 import EventCard from '@/components/Cards/CalendarCards.vue'
 import Calendar from '@/components/Calendar.vue';
 
+// Static content for each club with the information
 const events = ref([
   {
     date: '15-06-2025',
@@ -51,13 +52,16 @@ const events = ref([
   }
 ])
 
+// Currently selected filter type (default shows all)
 const defaultType = ref('alle');
 
+// Create the event types for the dropdown filter
 const eventTypes = computed(() => {
   const types = events.value.map(e => e.type);
   return ['alle', ...new Set(types)];
 });
 
+// The functioning filter, decided by the dropdown above
 const filteredEvents = computed(() => {
     if (defaultType.value ==='alle') return events.value;
     return events.value.filter(event => event.type ===defaultType.value)
@@ -71,19 +75,22 @@ const filteredEvents = computed(() => {
     <h1>Kalender</h1>
     <div class="line"></div>
   </div>
+<!-- Calendar component receives all events as props -->
   <Calendar :events="events"/>
   </div>
   <section>
-   <div class="titleWithLine">
+    <div class="titleWithLine">
       <div class="line"></div>
-   </div>
-   <section class="filterSection">
+    </div>
+    <section class="filterSection">
+<!-- Filter dropdown bound to `defaultType` -->
     <label for="eventType">Filtrér efter type:</label>
     <select id="eventType" v-model="defaultType">
       <option v-for="type in eventTypes" :key="type" :value="type">{{ type }}</option>
     </select>
   </section>
   <section>
+<!-- Render filtered events using EventCard component -->
     <EventCard
       v-for="(event, index) in filteredEvents"
       :key="index"

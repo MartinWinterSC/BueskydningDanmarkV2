@@ -6,16 +6,16 @@ import AarhusLogo from '@/assets/Billeder/AarhusLogo.png';
 import OdenseLogo from '@/assets/Billeder/OdenseLogo.jpg';
 import Copenhagen from '@/assets/Billeder/CopenhagenLogo.png'
 
-
+// Sets up the base club data as an array of objects. Data to be used later
 const clubs = ref([
-  { id: 1, name: 'København Bueskytteklub', 
-  lat: 55.6761, lng: 12.5683, 
-  city: 'København',
-  region: 'Sjælland', 
-  phone: '45 11 22 33', 
-  logo: Copenhagen 
-},
-
+  { id: 1, 
+    name: 'København Bueskytteklub', 
+    lat: 55.6761, lng: 12.5683, 
+    city: 'København',
+    region: 'Sjælland', 
+    phone: '45 11 22 33', 
+    logo: Copenhagen 
+  },
   { id: 2, 
     name: 'Aarhus Bueskytteforening', 
     lat: 56.1629, 
@@ -25,7 +25,6 @@ const clubs = ref([
     phone: '45 44 55 66', 
     logo: AarhusLogo 
 },
-
   { id: 3, 
     name: 'Odense Bueskyttelaug', 
     lat: 55.4038, 
@@ -55,11 +54,13 @@ function handleClubClick(club) { //Når en klub bliver klikket bliver den valgte
   selectedClub.value = club
 }
 
+// Executes the previous filter, filtering the list so only the selcted are shown and sorted to the top of the list
 const sortedClubs = computed(() => {
   let filtered = selectedRegion.value === 'Alle'
     ? clubs.value
     : clubs.value.filter(club => club.region === selectedRegion.value)
 
+// Reorder list to bring selected club to top
   if (selectedClub.value) {
     const selectedId = selectedClub.value.id
     filtered = [
@@ -81,14 +82,17 @@ const sortedClubs = computed(() => {
     </div>
   </div>
   <section class="contentSection">
+<!-- Recieves the club data as a prop -->
     <div class="mapWrapper">
       <ClubKort :clubs="clubs" @club-clicked="handleClubClick" />
     </div>
     <div class="sidebar">
+<!-- Sets up the HTML and functionality for the fliter mentioned on line 57 and 63 -->
       <label for="regionFilter">Filtrer efter region:</label>
       <select id="regionFilter" v-model="selectedRegion">
         <option v-for="region in regions" :key="region" :value="region">{{ region }}</option>
       </select>
+<!-- Shows details for thew selected club -->
       <div v-if="selectedClub" class="clubInfo">
         <h2>{{ selectedClub.name }}</h2>
         <p><strong>By:</strong> {{ selectedClub.city }}</p>
@@ -96,6 +100,7 @@ const sortedClubs = computed(() => {
         <p><strong>Region:</strong> {{ selectedClub.region }}</p>
       </div>
       <ul class="clubList">
+<!-- Loops through filtered and sorted clubs -->
         <li
           v-for="club in sortedClubs"
           :key="club.id"
@@ -178,17 +183,14 @@ const sortedClubs = computed(() => {
   .contentSection {
     flex-direction: column;
   }
-
   .mapWrapper {
     order: 1;  /* Sørg for at mappen kommer først */
   }
-
   .sidebar {
     order: 2;  /* Listen under */
     max-width: 100%;
     margin-top: 1rem;
   }
-
   .clubList {
     max-height: 300px; /* evt. juster højde på listen */
   }

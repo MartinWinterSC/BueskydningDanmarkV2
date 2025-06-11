@@ -4,16 +4,22 @@ import { useRoute } from 'vue-router';
 import AthleteCard from '@/components/Cards/AtheleteCard.vue';
 import AtheleteModal from '@/components/Modals/AtheleteModal.vue';
 
+// Accepts the prop "category" to filter which national team athletes to show, since it was selceted from the previous page (NationalTeamsOverviewView)
 const props = defineProps({
   category: String,
 });
 
+// 1: Sets base URL for the fetch request coming later, this path is universal across all fetch requests
+// 2: Stores relevant data from the fetch request
+// 3: Stores the currently selected athlete (which will be shown in the modal)
+// 4: Makes it so the modal by default is not shown
 const baseURL = 'https://www.mmd-s23-afsluttende-wp.dk/wp-json/wp/v2/';
 const athletes = ref([]);
 const selectedAthlete = ref(null);
 const showModal = ref(false);
-const route = useRoute();
 
+// Actual fetch request, specifically from "nationalteam" custom post type, uses a lot of ACF to store each piece of information to be shown in the modal
+// Each post is processed and stored in "athletes", will be used later
 onMounted(() => {
   fetch(baseURL + 'nationalteam?per_page=100&_embed')
     .then((response) => response.json())
@@ -38,18 +44,19 @@ onMounted(() => {
           instagram: post.acf?.socialMedia || '',
           worldArchery: post.acf?.internationalCompetitions || ''
         }));
-
-      console.log(`✅ Athletes fetched for category: ${props.category}`, athletes.value);
     })
     .catch((error) =>
       console.error('Something went wrong, check your code dumbass', error)
     );
 });
 
+// Function for clicking on an athlete showing the modal
 function handleClick(athlete) {
   selectedAthlete.value = athlete;
   showModal.value = true;
 }
+
+// Function for closing said modal again
 function closeModal() {
   showModal.value = false;
 }
@@ -64,6 +71,7 @@ function closeModal() {
 </div>
 <section class="BaseSection">
   <div class="Container">
+<!-- Render a card for each athlete -->
     <AthleteCard
       v-for="athlete in athletes"
       :key="athlete.id"
@@ -72,6 +80,7 @@ function closeModal() {
     />
   </div>
 </section>
+<!-- Modal component showing selected athlete's full profile -->
 <AtheleteModal
   :athlete="selectedAthlete"
   :visible="showModal"

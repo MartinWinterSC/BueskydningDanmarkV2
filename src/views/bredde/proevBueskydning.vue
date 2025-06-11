@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from 'vue'
 
+// List of accordion items with their open/closed state, by default closed
 const accordions = ref([
   {
     title: 'Hvordan kan jeg komme i gang med bueskydning?',
@@ -28,6 +29,7 @@ const accordions = ref([
   },
 ])
 
+// Toggles open/closed state for a given accordion index
 const toggleAccordion = (index) => {
   accordions.value[index].open = !accordions.value[index].open
 }
@@ -84,6 +86,7 @@ const toggleAccordion = (index) => {
     </section>
     <section>
         <h2>Alt der er værd at vide om bueskydning</h2>
+
         <div class="expandable">
             <div class="expandableHeader">
                 <h3>HVOR KAN JEG PRØVE BUESKYDNING?</h3>
@@ -169,8 +172,9 @@ const toggleAccordion = (index) => {
         </section>
         
         <section>
-            <h2>Alt der er værd at vide om bueskydning</h2>
-           <div v-for="(accordion, index) in accordions" :key="index" class="expandable">
+          <h2>Alt der er værd at vide om bueskydning</h2>
+<!-- Here goes the accordions, too much information -->
+          <div v-for="(accordion, index) in accordions" :key="index" class="expandable">
         <div class="expandableHeader" @click="toggleAccordion(index)">
           <h3>{{ accordion.title }}</h3>
           <span class="toggleIcon">{{ accordion.open ? '–' : '+' }}</span>

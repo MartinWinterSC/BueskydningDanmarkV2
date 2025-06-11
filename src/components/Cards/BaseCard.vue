@@ -2,7 +2,7 @@
 import StandardBtn from '../Buttons/StandardBtn.vue';
 
 const props = defineProps({
-    // Define any props if needed
+// Define any props if needed
     variant: {
         type: String,
        required: true,
