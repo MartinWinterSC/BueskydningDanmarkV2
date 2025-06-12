@@ -107,8 +107,6 @@ Bueskydning Danmark er en del af et større fællesskab via medlemsskab af Danma
       <infoCardSection />
     </section>
     </IntersectionObserverWrapper>
- 
-
 
 <IntersectionObserverWrapper>
   <section class="newArcherSection">
@@ -124,13 +122,15 @@ Bueskydning Danmark er en del af et større fællesskab via medlemsskab af Danma
           <p>Find ud af hvor du kan afprøve bueskydning henne tæt på dig</p>
         </div>
         <div class="NewArcherContentFooter">
-<!-- Usess the click funtion to push the user to the relevant view -->
+          <!-- Usess the click funtion to push the user to the relevant view -->
           <StandardBtn variant="primary" @click="$router.push('klubOversigtView')">Se klub oversigt</StandardBtn>
           <StandardBtn variant="primary" @click="$router.push('proevBueskydning')">Prøv bueskydning</StandardBtn>
         </div>    
-      </div>
-    </section>
-  </IntersectionObserverWrapper>
+      </div> 
+    </div>   
+  </section>
+</IntersectionObserverWrapper>
+
   <section class="headerSection">
     <div class="titleWithLine">
       <h2>Kalender</h2>
@@ -141,6 +141,7 @@ Bueskydning Danmark er en del af et større fællesskab via medlemsskab af Danma
       <Calendar />
       <aside class="sidebar">
         <div class="sidebarNews">
+
 <!-- Sets up the calender cards to the side of the main calendar -->
           <BaseCard
             v-for="post in sidebarNews"
