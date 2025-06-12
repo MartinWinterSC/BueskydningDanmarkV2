@@ -10,6 +10,7 @@ import nySkytteImg from '@/assets/Billeder/nySkytte.png';
 import StandardBtn from '@/components/Buttons/StandardBtn.vue';
 import UptoTopBtn from '@/components/Buttons/UptoTopBtn.vue';
 import IntersectionObserverWrapper  from '@/components/IntersectionObserverWrapper.vue'
+import infoCardSection from '@/components/SectionComponents/InfoCardSection.vue';
 import { useRouter } from 'vue-router';
 
 // 1: Sets up the function needed for using the Vue router (Being able to go between pages)
@@ -94,19 +95,33 @@ Bueskydning Danmark er en del af et større fællesskab via medlemsskab af Danma
     />
   </section>
   </IntersectionObserverWrapper>
-  <IntersectionObserverWrapper>
-    <section class="newArcherSection">
-      <img :src="nySkytteImg" alt="New Archer Image" class="newArcherImg" />
-      <div class="newArcherContainer">
-        <div class="newArcherContent">
-          <h2>Er du ny skytte?</h2>
-          <div class="NewArcherContentText">
-            <p>
-              Drømmer du om at prøve kræfter med bueskydning? Uanset om du er barn, voksen eller noget midt imellem, er bueskydning en sport for alle.
-              Som ny skytte bliver du en del af et fællesskab, hvor der er plads til både sjov, fordybelse og personlig udvikling.
-            </p>
-            <p>Find ud af hvor du kan afprøve bueskydning henne tæt på dig</p>
-          </div>
+
+    <IntersectionObserverWrapper>
+    <section>
+      <div class="headerSection">
+            <div class="titleWithLine">
+            <h2>Bliv en del af fællesskabet</h2>
+            <div class="line"></div>
+            </div>
+        </div>
+      <infoCardSection />
+    </section>
+    </IntersectionObserverWrapper>
+ 
+
+
+<IntersectionObserverWrapper>
+  <section class="newArcherSection">
+    <img :src="nySkytteImg" alt="New Archer Image" class="newArcherImg" />
+    <div class="newArcherContainer">
+      <div class="newArcherContent">
+        <h2>Er du ny skytte?</h2>
+        <div class="NewArcherContentText">
+          <p>
+            Drømmer du om at prøve kræfter med bueskydning? Uanset om du er barn, voksen eller noget midt imellem, er bueskydning en sport for alle.
+            Som ny skytte bliver du en del af et fællesskab, hvor der er plads til både sjov, fordybelse og personlig udvikling.
+          </p>
+          <p>Find ud af hvor du kan afprøve bueskydning henne tæt på dig</p>
         </div>
         <div class="NewArcherContentFooter">
 <!-- Usess the click funtion to push the user to the relevant view -->

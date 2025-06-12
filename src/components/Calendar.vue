@@ -20,11 +20,11 @@ const Months = ['Januar', 'Februar', 'Marts', 'April', 'Maj', 'Juni', 'Juli', 'A
 const calendarDays = computed(() => {
   const days = [];
 
-//Første dag i måned
+//Første dag i måned, her tager vi den aktuelle måned og år fra vores refs og sætter datoen til 1 for at få den første dag i måneden.
 const firstDayofMonth = new Date(currentYear.value, currentMonth.value, 1);
 //sidste dag i måned - vi sætter 1,0 for at den retunrere den sidste dag i den aktuelle måned da javascript Date API giver en sidste dag i måned hvis du sætter den til 0.
 const lastDayofMonth = new Date(currentYear.value, currentMonth.value + 1,0); //Vi sætter datoen til 0 for at få sidste dag i forrige måned)
-const startDay = (firstDayofMonth.getDay() +6) % 7; // 0 = søndag og 1 = mandag)
+const startDay = (firstDayofMonth.getDay() +6) % 7; // getDay returnerer 0 for søndag og mandag som 1 - men I danmark køre vi med mandag som første dag altså 0. ved at bruge (getDay() + 6) % 7 flytter vi søndag til slutningen af ugen.
 const totalDays = lastDayofMonth.getDate();
 
 //Her tilføjer vi tomme dagee fra de forrige månede
@@ -33,7 +33,7 @@ const totalDays = lastDayofMonth.getDate();
     days.push(date) //pusher dag fra forrige måned
   }
 
-  //Her tilføjer vi dagene fra den aktuelle måned
+  //Her tilføjer vi dagene fra den aktuelle måned 
   for (let i = 1; i <= totalDays; i++) {
     const date = new Date(currentYear.value, currentMonth.value, i)
     days.push(date)
@@ -128,7 +128,7 @@ function nextMonth() {
 <style scoped>
 .calendar {
   max-width: 1000px; 
-  width: 100%;
+  width: 90%;
   margin: auto;
   font-family: sans-serif;
   border: 1px solid #e0e0e0;
