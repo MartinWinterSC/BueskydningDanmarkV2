@@ -140,22 +140,17 @@ a{
   border-radius: 8px;
   overflow: hidden;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-  align-items: center;
-  max-width: 500px;
 }
 
 .CardImageHorizontal {
-  /* flex-shrink: 0; */
   width: 150px;
-  /* height: 100px; */
 }
 
 .CardImageHorizontal img {
   width: 100%;
-  display: block;
   height: 100%;
   object-fit: cover;
-  border-radius: 4px;
+  display: block;
 }
 
 .CardContentHorizontal {

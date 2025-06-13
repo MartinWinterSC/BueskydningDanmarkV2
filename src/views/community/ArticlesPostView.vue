@@ -67,13 +67,18 @@ const toggleBookmark = () => {
   isBookmarked.value = !isBookmarked.value;
 };
 
-// fetch the post content using the ID from the route, has to be async instead of normal fetch, unsure why exactly this won't work as the others
+// fetch the post content using the ID from the route, has to be async instead of normal fetch, because of the ID handling, needing to have that processed before it can continue with the request
 onMounted(async () => {
   const id = route.query.id;
-  if (!id) return;
+  const type = route.query.type; // 'news' or 'forum'
+
+  if (!id || !type || !['news', 'forum'].includes(type)) {
+    console.warn('Missing or invalid ID/type in route query');
+    return;
+  }
 
   try {
-    const res = await fetch(`https://www.mmd-s23-afsluttende-wp.dk/wp-json/wp/v2/news/${id}?_embed`);
+    const res = await fetch(`https://www.mmd-s23-afsluttende-wp.dk/wp-json/wp/v2/${type}/${id}?_embed`);
     const data = await res.json();
 
     post.value.title = data.title.rendered;
