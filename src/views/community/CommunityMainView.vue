@@ -15,8 +15,8 @@ const Forumscards = ref([]);
 const router = useRouter();
 
 // Navigates to the article view adding the ID at the end of the URL for use to specify the content under the page
-const goToArticle = (id) => {
-  router.push({ name: 'Artikle', query: { id } });
+const goToArticle = (id, type) => {
+  router.push({ name: 'Artikle', query: { id, type } });
 };
 
 //  Navigate to a route path
@@ -112,7 +112,7 @@ onMounted(() => {
         :key="`news-${index}`"
         v-bind="card"
         variant="News"
-        @click="goToArticle(card.id)"
+        @click="goToArticle(card.id, 'news')"
       />
     </div>
     <div class="seeMoreBtnContainer">
@@ -131,7 +131,7 @@ onMounted(() => {
         :key="`forum-${index}`"
         v-bind="card"
         variant="News"
-        @click="goToArticle(card.id)"
+        @click="goToArticle(card.id, 'forum')"
       />
     </div>
     <div class="seeMoreBtnContainer">
