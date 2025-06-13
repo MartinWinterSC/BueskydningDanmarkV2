@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, } from 'vue'
+import { ref, computed, onMounted, onBeforeUnmount} from 'vue'
 
 const props = defineProps({
   events: {
@@ -7,6 +7,11 @@ const props = defineProps({
     default: () => [] //Fallback hvis ingen events gives. 
   }
 })
+
+//states
+const selectedEvent  = ref(null); //State til at holde styr på det valgte event som vises i popup
+const showPopup = ref(false); //State til at holde styr på om popup er åben eller lukket
+const popupPosition = ref({ top: 0, left: 0 }) // Positionen for popup'en (top og venstre i pixels)
 
 //State (reaktive refs) til nholde styr på måned og år som bliver initialsieret til dags dato.
 const currentMonth = ref(new Date().getMonth()); //Januar = 0 og December = 11
@@ -90,6 +95,46 @@ function nextMonth() {
     currentMonth.value++;
   }
 }
+// Funktion til at åbne popup'en når der klikkes på et event
+function openPopup(event, e) {
+  selectedEvent.value = event;
+  showPopup.value = true;
+
+  // Beregn positionen for popup'en baseret på det klikkede element
+  const rect = e.target.getBoundingClientRect();
+  popupPosition.value = {
+    top: rect.top + window.scrollY + 10, // 10px under event
+    left: rect.left + window.scrollX + 50 // 10px til højre
+  };
+}
+
+// Reactive ref som bestemmer om skærmstørrelsen er mobil (under eller lig med 600px bredde)
+const isMobile = ref(false);
+//on mounted som sætter isMobile til true hvis skærmen er mindre end eller lig med 600px bredde og lytter på resize event for at opdatere isMobile.
+onMounted(() => {
+  isMobile.value = window.innerWidth <= 600;
+  window.addEventListener('resize', () => {
+    isMobile.value = window.innerWidth <= 600;
+  });
+});
+
+// onBeforeUnmount for at fjerne event listeneren når komponenten unmountes
+const handleClickOutside = (e) => {
+  const popupEl = document.querySelector('.popup');
+  // Hvis popup'en er åben og klikker udenfor popup'en, luk popup'en
+  if (popupEl && !popupEl.contains(e.target)) {
+    showPopup.value = false;
+    selectedEvent.value = null;
+  }
+};
+// Lytter på klik på dokumentet for at lukke popup'en hvis der klikkes udenfor
+onMounted(() => {
+  document.addEventListener('click', handleClickOutside);
+});
+// Fjerner event listeneren når komponenten unmountes for at undgå hukommelseslækager
+onBeforeUnmount(() => {
+  document.removeEventListener('click', handleClickOutside);
+});
 </script>
 
 <template>
@@ -112,23 +157,35 @@ function nextMonth() {
         :key="day.toISOString()"
         class="day"
         :class="{ today: isToday(day), 'otherMonth': day.getMonth() !== currentMonth }"
-        @click="addEvent(day)"
       >
          <div class="dateNumber">{{ day.getDate() }}</div>
         <ul class="events">
-          <li v-for="(event, index) in getEventsForDate(day)" :key="index" :class="'event ' + event.type">{{ event.title }}</li>
+          <li v-for="(event, index) in getEventsForDate(day)" :key="index" :class="'event ' + event.type"  @click.stop="openPopup(event, $event)">{{ event.title }}</li>
         </ul>
       </div>
     </div>
   </div>
+  <transition name ="fade">
+    <!-- Popup for displaying event details -->
+    <div
+      v-if="showPopup"
+      class="popup"
+      :class="{ mobilePopup: isMobile }"
+      :style="!isMobile ? { top: popupPosition.top + 'px', left: popupPosition.left + 'px' } : null"
+    >
+      <h3>{{ selectedEvent.title }}</h3>
+      <p><strong>Dato:</strong> {{ selectedEvent.date }}</p>
+      <p><strong>Type:</strong> {{ selectedEvent.type }}</p>
+      <p v-if="selectedEvent.description"><strong>Beskrivelse:</strong> {{ selectedEvent.description }}</p>
+    
+    </div>
+</transition>
 </template>
-
-
 
 <style scoped>
 .calendar {
   max-width: 1000px; 
-  width: 90%;
+  width: 80%;
   margin: auto;
   font-family: sans-serif;
   border: 1px solid #e0e0e0;
@@ -170,7 +227,6 @@ function nextMonth() {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
 }
-
 
 .weekday {
   font-weight: bold;
@@ -246,6 +302,39 @@ function nextMonth() {
 
 .event.socialt {
   background-color: #c231aa;
+}
+
+.popup {
+  position: absolute;
+  background-color: white;
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+  max-width: 300px;
+  width: max-content;
+}
+
+.popup.mobilePopup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  max-width: 90vw;
+  width: 90vw;
+}
+
+.popup h3 {
+  margin-top: 0;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.3s ease;
+}
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
 }
 
 

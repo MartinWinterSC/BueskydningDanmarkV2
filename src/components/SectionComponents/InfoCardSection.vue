@@ -10,7 +10,7 @@ const isVisible = ref(false);
 onMounted(() => {
   setTimeout(() => {
     isVisible.value = true;
-  }, 100);
+  }, 1000);
 });
 
 const cards = [
