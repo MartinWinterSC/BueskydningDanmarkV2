@@ -55,7 +55,7 @@ const totalDays = lastDayofMonth.getDate();
 
 //Funktion som formatterer en dato til dansk format ergo dd-mm-yyyy
 function danishDateFormat(date){
-  const day = String(date.getDate()).padStart(2,'0');
+  const day = String(date.getDate()).padStart(2,'0'); // padStart bruges til at sikre at datoen altid er 2 cifre, f.eks. 01, 02, ..., 31
   const month = String(date.getMonth()+1).padStart(2,'0');
   const year = date.getFullYear();
   return `${day}-${month}-${year}`;
