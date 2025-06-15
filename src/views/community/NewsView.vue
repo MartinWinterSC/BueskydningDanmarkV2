@@ -19,7 +19,7 @@ const router = useRouter();
 
 // Navigates to the article view adding the ID at the end of the URL for use to specify the content under the page
 const goToArticle = (id) => {
-  router.push({ name: 'Artikle', query: { id } });
+  router.push({ name: 'Artikle', query: { id, type } });
 };
 
 // Opens the newsletter modal when button is clicked
@@ -121,7 +121,7 @@ onMounted(() => {
         <div class="sidebarNews">
           <BaseCard
             v-for="post in sidebarNews"
-            :key="post.id"
+            :key="`news-${index}`"
             variant="horizontalNews" 
             :title="post.title"
             :summary="post.summary"

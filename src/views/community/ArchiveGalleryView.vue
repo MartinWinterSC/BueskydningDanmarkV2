@@ -1,40 +1,37 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 
-// 1: Empty array to store rally result entries fetched from WordPress
-// 2: Sets base URL for the fetch request coming later, this path is universal across all fetch requests
-const media = ref([]);
+// Reactive array to store gallery data
+const gallery = ref([]);
 const baseURL = "https://www.mmd-s23-afsluttende-wp.dk/wp-json/wp/v2/";
 
-// Stores the currently selected image (the one that'll be shown in the modal)
+// Selected image for modal
 const selectedImage = ref(null);
 
-// Opens the modal with the selected image
+// Open modal
 const openModal = (image) => {
     selectedImage.value = image;
 };
 
-// Closes the modal (sets selected image to null)
+// Close modal
 const closeModal = () => {
     selectedImage.value = null;
 };
 
-// Actual fetch request, specifically from "media" (currently, will be a custom post type later)
+// Fetch gallery data on mount
 onMounted(() => {
-    fetch(baseURL + "media?per_page=100&_embed")
+    fetch(baseURL + "gallery?per_page=100&_embed")
         .then(response => response.json())
         .then(data => {
-                media.value = data
-                .filter(item => {
-                    const url = item.source_url?.toLowerCase() || '';
-                    return url.endsWith('.jpg') || url.endsWith('.jpeg') || url.endsWith('.png');
-                })
-                .map(item => ({
+            gallery.value = data.map(item => {
+                const media = item._embedded?.['wp:featuredmedia']?.[0];
+                return {
                     name: item.title?.rendered || 'Ingen titel',
-                    url: item.source_url
-                }));
+                    url: media?.source_url || '',
+                };
+            }).filter(item => item.url);
         })
-        .catch(error => console.error("Media fetch error:", error));
+        .catch(error => console.error("Gallery fetch error:", error));
 });
 </script>
 
@@ -42,7 +39,7 @@ onMounted(() => {
 <main>
     <h1>Billeder</h1>
     <section class="imageContainer">
-        <div v-for="(item, index) in media" :key="index">
+        <div v-for="(item, index) in gallery" :key="index">
 <!-- Image with click-to-open modal -->
             <img :src="item.url" :alt="item.name" @click="openModal(item)" />
             <p>{{ item.name }}</p>
