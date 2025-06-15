@@ -35,29 +35,8 @@ const comments = ref([
   }
 ]);
 
-// Static content for other posts
-const sidebarItems = ref([
-  {
-    id: 1,
-    title: "Emme: Lær det rette mindset til bueskydning",
-    image: ""
-  },
-  {
-    id: 2,
-    title: "Emme: Bueskydning i naturen",
-    image: ""
-  },
-  {
-    id: 3,
-    title: "Emme: Salg af brugt udstyr den 2016",
-    image: ""
-  },
-  {
-    id: 4,
-    title: "Emme: Recurvebue sælges",
-    image: ""
-  }
-]);
+// Empty object to be filled in the 
+const sidebarItems = ref([]);
 
 // 6: Toggles like and bookmark states
 const toggleLike = () => {
@@ -88,6 +67,21 @@ onMounted(async () => {
   } catch (err) {
     console.error('Failed to fetch post:', err);
   }
+
+  try {
+  const sidebarRes = await fetch(`https://www.mmd-s23-afsluttende-wp.dk/wp-json/wp/v2/news?per_page=4&_embed`);
+  const sidebarData = await sidebarRes.json();
+
+  // Populate sidebarItems with processed content
+  sidebarItems.value = sidebarData.map(item => ({
+    id: item.id,
+    title: item.title.rendered,
+    image: item._embedded?.['wp:featuredmedia']?.[0]?.source_url || '',
+  }));
+} catch (err) {
+  console.error('Failed to fetch sidebar items:', err);
+}
+
 });
 </script>
 
