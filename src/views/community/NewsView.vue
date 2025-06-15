@@ -17,9 +17,9 @@ const articleCards = ref([]);
 // Sets up the function needed for using the Vue router (Being able to go between pages)
 const router = useRouter();
 
-// Navigates to the article view adding the ID at the end of the URL for use to specify the content under the page
+// Navigates to the article view adding the ID and type to the URL for use to specify the content under the page
 const goToArticle = (id) => {
-  router.push({ name: 'Artikle', query: { id, type } });
+  router.push({ name: 'Artikle', query: { id, type: 'news' } });
 };
 
 // Opens the newsletter modal when button is clicked
@@ -120,7 +120,7 @@ onMounted(() => {
 <!-- Renders the two articles on the side -->
         <div class="sidebarNews">
           <BaseCard
-            v-for="post in sidebarNews"
+            v-for="(post, index) in sidebarNews"
             :key="`news-${index}`"
             variant="horizontalNews" 
             :title="post.title"
@@ -143,16 +143,12 @@ onMounted(() => {
     </div>
 <!-- Renders all articles -->
     <div class="cardGrid">
-      <BaseCard
-      v-for="post in articleCards"
-      :key="post.id"
-      variant="News"
-      :title="post.title"
-      :summary="post.summary"
-      :date="post.date"
-      :image="post.image"
-      @click="goToArticle(post.id)"
-    />
+      <BaseCard 
+        v-for="(card, index) in sidebarNews"
+        :key="card.title"
+        v-bind="card"
+        @click="goToArticle(card.id)"
+      />
     </div>
   </div>
 

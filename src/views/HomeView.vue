@@ -41,7 +41,7 @@ const goTo = (path) => {
 
 // Same as above, but also adds the ID to the URL so the same page can display any article
 const goToArticle = (id) => {
-  router.push({ name: 'Artikle', query: { id } });
+  router.push({ name: 'Artikle', query: { id, type: 'news' } });
 };
 
 // Actual fetch request, specifically from "news" custom post type, only the first 3 and "embed" makes the featured media (an image) accessible
